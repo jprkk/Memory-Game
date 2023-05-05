@@ -1,0 +1,54 @@
+Variables:
+cards = [6 pairs]
+matched = []
+message = '' ''
+time = 60 seconds
+directions = "click a card to start game"
+cardOne = [] 
+cardTwo = []
+
+function: shuffle 
+  randomize order of cards
+
+function: loadGame
+  call function: shuffle
+   message equals directions
+   time equals back to 60
+   matched equals empty array
+
+function: countDown
+  for time > 0
+    if message equals directions then 
+      message equals time
+    setTimeout of 1 second delay
+      time--
+      callback function: countDown
+
+clickEvent: chooseCard
+  if time equals 60 
+    call function: countDown
+  if cardOne is empty 
+    push value of clicked card into cardOne
+  else if cardTwo is empty
+    push value of clicked card into cardTwo
+  if cardOne and cardTwo both have a value
+    call function: checkMatched
+ 
+function: checkMatched
+  if cardOne equals cardTwo
+    Add to matched (stay flipped)
+  if cardOne does not equal cardTwo
+    flip both cards back
+  if all cards have been matched
+    message equals "You won!"
+  if time reaches 0
+    message eqauls "Try again."
+
+function: render
+  chooseCard
+  call function: loadGame
+
+
+Event Listeners: 
+-'click', flipCard
+-'click', replay
